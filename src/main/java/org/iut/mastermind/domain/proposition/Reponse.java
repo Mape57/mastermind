@@ -3,8 +3,6 @@ package org.iut.mastermind.domain.proposition;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
-
 public class Reponse {
 	private final String motSecret;
 	private final List<Lettre> resultat = new ArrayList<>();
@@ -23,7 +21,8 @@ public class Reponse {
 	// du mot proposé
 	public void compare(String essai) {
 		for (this.position = 0; this.position < essai.length(); this.position++) {
-			this.resultat.add(this.evaluationCaractere(essai.charAt(this.position)));
+			char c = essai.charAt(this.position);
+			this.resultat.add(this.evaluationCaractere(c));
 		}
 	}
 
@@ -38,18 +37,18 @@ public class Reponse {
 
 	// renvoie le statut du caractère
 	private Lettre evaluationCaractere(char carCourant) {
-		if (this.estPresent(carCourant)) {
-			if (this.estPlace(carCourant)) {
-				return Lettre.PLACEE;
-			}
+		if (this.estPlace(carCourant)) {
+			return Lettre.PLACEE;
+		} else if (this.estPresent(carCourant)) {
 			return Lettre.NON_PLACEE;
+		} else {
+			return Lettre.INCORRECTE;
 		}
-		return Lettre.INCORRECTE;
 	}
 
 	// le caractère est présent dans le mot secret
 	private boolean estPresent(char carCourant) {
-		return this.motSecret.contains("" + carCourant);
+		return this.motSecret.contains(String.valueOf(carCourant));
 	}
 
 	// le caractère est placé dans le mot secret

@@ -1,6 +1,5 @@
 package org.iut.mastermind.domain.partie;
 
-import org.iut.mastermind.domain.proposition.MotSecret;
 import org.iut.mastermind.domain.proposition.Reponse;
 
 public class Partie {
@@ -49,28 +48,19 @@ public class Partie {
 		Reponse reponse = new Reponse(this.motADeviner);
 		reponse.compare(motPropose);
 		this.nbEssais++;
-		verifieNbEssais();
-		if (reponse.lettresToutesPlacees()) {
-			done();
+		if (plusDeTour() || reponse.lettresToutesPlacees()) {
+			this.partieTerminee = true;
 		}
 		return reponse;
 	}
 
 	// vérifie que le nombre d'essais max n'est pas atteint
-	private void verifieNbEssais() {
-		if (this.nbEssais >= NB_ESSAIS_MAX) {
-			done();
-		}
+	private boolean plusDeTour() {
+		return this.nbEssais >= NB_ESSAIS_MAX;
 	}
 
 	// la partie est-elle terminée
 	public boolean isTerminee() {
 		return this.partieTerminee;
-	}
-
-	// la partie est terminée
-	void done() {
-		this.partieTerminee = true;
-		System.out.println("La partie est finie");
 	}
 }
